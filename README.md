@@ -114,6 +114,48 @@ All copy lives in `src/data/site.ts`. The PDF ships with Lorem Ipsum in every
 body slot, so that is what is in there — replace the constants at the top of the
 file with the real copy and every section picks it up.
 
+## Deployment
+
+Deployed to GitHub Pages by `.github/workflows/deploy.yml` on every push to
+`main` (or manually from the Actions tab). The workflow builds with
+`npm ci && npm run build` and publishes `dist/`.
+
+Live at **https://bitsnpixs.github.io/nsrl-infrastructure/**
+
+### One-time repository setup
+
+In **Settings → Pages**, set **Source** to **GitHub Actions**. Without this the
+workflow builds fine but nothing is published.
+
+### The sub-path matters
+
+A project site is served from `/<repo>/`, not the domain root, so
+`astro.config.mjs` sets:
+
+```js
+site: "https://bitsnpixs.github.io",   // origin only
+base: "/nsrl-infrastructure",          // repo sub-path
+```
+
+Astro prefixes generated asset URLs with `base` automatically. Hand-written
+absolute paths are *not* rewritten — the favicon in `Base.astro` joins
+`import.meta.env.BASE_URL` for this reason. If you add a link or asset later,
+write it the same way rather than as `/whatever.png`, or it will 404 in
+production while working locally.
+
+`npm run preview` serves the built site at the real sub-path
+(`localhost:4321/nsrl-infrastructure/`), which is the only reliable way to
+catch a base-path mistake before it ships.
+
+`public/.nojekyll` stops GitHub Pages from running Jekyll, which would
+otherwise strip the `_astro/` asset directory.
+
+### Moving to a custom domain
+
+1. `astro.config.mjs`: `site: "https://your-domain.com"`, `base: "/"`
+2. Add `public/CNAME` containing the bare domain, e.g. `nsrlinfrastructure.com`
+3. Point the DNS at GitHub Pages and set the domain under Settings → Pages
+
 ## Images
 
 Source art is in `src/assets/`, so Astro hashes, resizes and converts it to
