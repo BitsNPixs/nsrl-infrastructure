@@ -1,0 +1,160 @@
+---
+import { site, footer } from "../data/site";
+---
+
+<footer class="footer" id="contact">
+  <div class="footer__card shell">
+    <div class="footer__cols inner">
+      {
+        footer.columns.map((column, i) => (
+          <div class="footer__col" data-reveal data-reveal-delay={i * 100}>
+            <h2 class="footer__heading">{column.heading}</h2>
+            <ul class="footer__links">
+              {column.links.map((link) => (
+                <li>
+                  <a href={link.href}>{link.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+
+      <div class="footer__col" data-reveal data-reveal-delay="200">
+        <h2 class="footer__heading">{footer.contact.heading}</h2>
+        <ul class="footer__links">
+          <li><a href={footer.contact.phone.href}>{footer.contact.phone.label}</a></li>
+          <li><a href={footer.contact.email.href}>{footer.contact.email.label}</a></li>
+        </ul>
+        <address class="footer__address">
+          {footer.contact.address.map((line) => <span>{line}</span>)}
+        </address>
+      </div>
+
+      <div class="footer__top">
+        <a href="#home">Go to Top</a>
+      </div>
+    </div>
+
+    <div class="footer__wordmark" aria-hidden="true" data-reveal="fade" data-reveal-delay="120">{site.wordmark}</div>
+  </div>
+</footer>
+
+<style>
+  /* Dark card x60..1860, flush with the bottom of the page; the oversized
+     wordmark sits on the card's bottom edge and is clipped by its radius. */
+  .footer__card {
+    padding-top: calc(66 * var(--k));
+    border-radius: var(--r-card);
+    background: var(--c-dark);
+    color: #fff;
+    overflow: hidden;
+    container-type: inline-size;
+  }
+
+  /* Columns at x245 | x535 | x835 | "Go to Top" flush right at x1675. */
+  .footer__cols {
+    display: grid;
+    grid-template-columns: 290fr 300fr 500fr 340fr;
+    align-items: start;
+  }
+
+  .footer__heading {
+    font-size: var(--fs-body);
+    line-height: 1.875;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .footer__links {
+    margin-top: calc(31 * var(--k));
+  }
+
+  .footer__links li + li {
+    margin-top: calc(11 * var(--k));
+  }
+
+  .footer__links a {
+    display: inline-block;
+    font-size: var(--fs-body);
+    line-height: 1.875;
+    color: #fff;
+    transition: opacity 0.2s ease;
+  }
+
+  .footer__links a:hover {
+    opacity: 0.65;
+  }
+
+  .footer__address {
+    display: grid;
+    margin-top: calc(17 * var(--k));
+    font-size: var(--fs-body);
+    line-height: 1.875;
+    font-style: normal;
+    color: #fff;
+  }
+
+  .footer__top {
+    justify-self: end;
+    padding-top: calc(94 * var(--k));
+  }
+
+  .footer__top a {
+    font-size: var(--fs-body);
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 0.28em;
+    transition: opacity 0.2s ease;
+  }
+
+  .footer__top a:hover {
+    opacity: 0.65;
+  }
+
+  /* On the canvas the wordmark is 150px inside an 1800px card with a 43px
+     inset — i.e. 8.333% and 2.389% of the card. Expressed in container units
+     it fills the card's width exactly at every viewport, and the negative
+     margin drops the baseline onto the card's bottom edge. */
+  .footer__wordmark {
+    margin-top: calc(90 * var(--k));
+    margin-bottom: -0.1267em;
+    padding-inline: 2.3cqw;
+    font-size: 8.3cqw;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -0.041em;
+    white-space: nowrap;
+    color: #fff;
+  }
+
+  @media (max-width: 1100px) {
+    .footer__cols {
+      grid-template-columns: repeat(2, 1fr);
+      gap: calc(48 * var(--k)) calc(40 * var(--k));
+    }
+
+    .footer__top {
+      grid-column: 1 / -1;
+      justify-self: start;
+      padding-top: 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .footer__card {
+      padding-top: 40px;
+    }
+
+    .footer__cols {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .footer__wordmark {
+      margin-top: 48px;
+    }
+  }
+</style>

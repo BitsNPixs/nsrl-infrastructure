@@ -1,0 +1,101 @@
+---
+import { Image } from "astro:assets";
+import { hero } from "../data/site";
+import heroBuilding from "../assets/hero-building.png";
+---
+
+<section class="hero" id="home">
+  <div class="hero__text wide">
+    <h1 class="hero__title" data-reveal>
+      {hero.headline.map((line) => <span>{line}</span>)}
+    </h1>
+    <p class="hero__intro" data-reveal data-reveal-delay="120">{hero.intro}</p>
+  </div>
+
+  <Image
+    class="hero__image"
+    data-reveal
+    data-reveal-delay="240"
+    src={heroBuilding}
+    alt="The NSRL Infrastructure headquarters building"
+    widths={[768, 1200, 1920]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+  />
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding-top: calc(30 * var(--k));
+  }
+
+  .hero__text {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    /* Headline x100.. | intro x1260..1820 on the 1720 container. */
+    grid-template-columns: 1160fr 560fr;
+    align-items: start;
+  }
+
+  /* "From / Technology to / Industry Leadership." — 56px, 80px leading. */
+  .hero__title {
+    grid-column: 1;
+    font-size: var(--fs-56);
+    line-height: var(--lh-hero);
+    font-weight: 400;
+    text-transform: uppercase;
+    color: var(--c-ink);
+  }
+
+  .hero__title span {
+    display: block;
+  }
+
+  .hero__intro {
+    grid-column: 2;
+    margin-top: calc(28 * var(--k));
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--c-muted);
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  /* Full-bleed cut-out of the building; its top overlaps the headline. */
+  .hero__image {
+    width: 100%;
+    height: auto;
+    margin-top: calc(-66 * var(--k));
+    border-radius: 0 0 var(--r-hero) var(--r-hero);
+  }
+
+  @media (max-width: 1100px) {
+    .hero__text {
+      grid-template-columns: 1fr;
+      gap: calc(24 * var(--k));
+    }
+
+    .hero__title,
+    .hero__intro {
+      grid-column: 1;
+    }
+
+    .hero__intro {
+      margin-top: 0;
+      max-width: 62ch;
+    }
+
+    .hero__image {
+      margin-top: calc(36 * var(--k));
+    }
+  }
+
+  @media (max-width: 900px) {
+    .hero__intro {
+      text-align: left;
+    }
+  }
+</style>

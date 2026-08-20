@@ -1,0 +1,102 @@
+---
+import { journey } from "../data/site";
+---
+
+<section class="journey">
+  <div class="journey__card shell">
+    <div class="journey__head inner">
+      <h2 class="section-title" data-reveal>{journey.title}</h2>
+      <div class="prose" data-reveal data-reveal-delay="120">
+        <p>{journey.intro}</p>
+      </div>
+    </div>
+
+    <div class="journey__panel inner" data-reveal data-reveal-delay="200">
+      <ul class="points">
+        {
+          journey.points.map((point) => (
+            <li class="point">
+              <h3 class="point__title">{point.title}</h3>
+              <p class="point__body">{point.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .journey__card {
+    padding-block: calc(94 * var(--k)) calc(115 * var(--k));
+    border-radius: var(--r-card);
+    background: var(--c-surface);
+  }
+
+  /* Heading x245 (580 wide) | intro copy x825..1675 (850 wide). */
+  .journey__head {
+    display: grid;
+    grid-template-columns: 580fr 850fr;
+    align-items: start;
+  }
+
+  .journey__panel {
+    margin-top: calc(41 * var(--k));
+    padding: calc(60 * var(--k)) calc(74 * var(--k));
+    border-radius: var(--r-media);
+    background: var(--c-page);
+  }
+
+  .points {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: calc(133 * var(--k));
+    row-gap: calc(75 * var(--k));
+  }
+
+  .point__title {
+    margin-bottom: calc(10 * var(--k));
+    font-size: var(--fs-30);
+    line-height: 1.33;
+    font-weight: 400;
+    color: var(--c-heading);
+  }
+
+  .point__body {
+    font-size: var(--fs-18);
+    line-height: 1.667;
+    color: var(--c-body-strong);
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  @media (max-width: 1100px) {
+    .journey__head {
+      grid-template-columns: 1fr;
+      gap: calc(24 * var(--k));
+    }
+
+    .points {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: calc(60 * var(--k));
+      row-gap: calc(48 * var(--k));
+    }
+  }
+
+  @media (max-width: 900px) {
+    .point__body {
+      text-align: left;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .journey__panel {
+      padding: 28px 22px;
+    }
+
+    .points {
+      grid-template-columns: 1fr;
+      row-gap: 32px;
+    }
+  }
+</style>

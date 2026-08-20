@@ -1,0 +1,80 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    {/* Runs before first paint so revealed elements never flash in at full
+        opacity. The timeout is a safety net: if the observer below never
+        boots, everything is shown rather than left invisible. */}
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        root.classList.add("reveal-ready");
+        setTimeout(function () {
+          if (!root.hasAttribute("data-reveal-active")) {
+            root.classList.remove("reveal-ready");
+          }
+        }, 2500);
+      })();
+    </script>
+
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+
+    <script>
+      // Fade-up on scroll, in the spirit of AOS but without the dependency.
+      // Opt in with data-reveal, stagger with data-reveal-delay="120".
+      const root = document.documentElement;
+      root.setAttribute("data-reveal-active", "");
+
+      const items = document.querySelectorAll<HTMLElement>("[data-reveal]");
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (reduced || !("IntersectionObserver" in window)) {
+        items.forEach((el) => el.classList.add("is-revealed"));
+      } else {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              const el = entry.target as HTMLElement;
+              const delay = Number(el.dataset.revealDelay ?? 0);
+              window.setTimeout(() => el.classList.add("is-revealed"), delay);
+              observer.unobserve(el);
+            }
+          },
+          // Hold off until the element is ~10% clear of the bottom edge.
+          { rootMargin: "0px 0px -10% 0px", threshold: 0 }
+        );
+
+        items.forEach((el) => observer.observe(el));
+      }
+    </script>
+  </body>
+</html>

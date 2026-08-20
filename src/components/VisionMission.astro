@@ -1,0 +1,83 @@
+---
+import { Image } from "astro:assets";
+import { visionMission } from "../data/site";
+import campus from "../assets/campus.png";
+---
+
+<section class="vm">
+  <div class="vm__grid inner">
+    <div class="vm__text">
+      {
+        visionMission.map((block, i) => (
+          <article class="vm__block" data-reveal data-reveal-delay={i * 120}>
+            <h2 class="section-title">{block.title}</h2>
+            <div class="prose">
+              <p>{block.body}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <Image
+      class="vm__image"
+      data-reveal
+      data-reveal-delay="160"
+      src={campus}
+      alt="Paved forecourt and glass façade of the NSRL campus"
+      widths={[580, 1160]}
+      sizes="(max-width: 1100px) 100vw, 30vw"
+      loading="lazy"
+    />
+  </div>
+</section>
+
+<style>
+  .vm {
+    padding-block: calc(124 * var(--k)) calc(138 * var(--k));
+  }
+
+  /* Copy x245..950 (705) | gutter 145 | photo x1095..1675 (580). */
+  .vm__grid {
+    display: grid;
+    grid-template-columns: 705fr 145fr 580fr;
+    align-items: center;
+  }
+
+  .vm__text {
+    grid-column: 1;
+  }
+
+  .vm__block + .vm__block {
+    margin-top: calc(60 * var(--k));
+  }
+
+  .vm__block .prose {
+    margin-top: calc(26 * var(--k));
+  }
+
+  .vm__image {
+    grid-column: 3;
+    width: 100%;
+    height: auto;
+    border-radius: var(--r-media);
+  }
+
+  @media (max-width: 1100px) {
+    .vm__grid {
+      grid-template-columns: 1fr;
+      gap: calc(40 * var(--k));
+    }
+
+    .vm__text,
+    .vm__image {
+      grid-column: 1;
+    }
+  }
+
+  @media(max-width: 640px) {
+   .vm {
+    padding-block: calc(70 * var(--k)) calc(70 * var(--k));
+      }
+  }
+</style>

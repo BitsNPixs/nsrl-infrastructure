@@ -1,0 +1,106 @@
+---
+import { Image } from "astro:assets";
+import { brands } from "../data/site";
+import logoNsrl from "../assets/logo-nsrl.png";
+import logoCurawear from "../assets/logo-curawear.png";
+import logoVeltric from "../assets/logo-veltric.png";
+
+const items = [
+  { name: "NSRL", logo: logoNsrl, surface: "var(--c-surface)", width: 193 },
+  { name: "Curawear", logo: logoCurawear, surface: "var(--c-cream)", width: 298 },
+  { name: "Veltric", logo: logoVeltric, surface: "var(--c-neon)", width: 279 },
+];
+---
+
+<section class="brands" id="brands">
+  <div class="inner">
+    <div class="brands__head">
+      <h2 class="section-title" data-reveal>
+        {brands.title.map((line) => <span>{line}</span>)}
+      </h2>
+      <div class="prose" data-reveal data-reveal-delay="120">
+        <p>{brands.intro}</p>
+      </div>
+    </div>
+
+    <ul class="brands__list">
+      {
+        items.map((item, i) => (
+          <li
+            class="brand"
+            style={`--surface:${item.surface}`}
+            data-reveal
+            data-reveal-delay={i * 110}
+          >
+            <Image
+              class="brand__logo"
+              src={item.logo}
+              alt={`${item.name} logo`}
+              style={`width:calc(${item.width} * var(--k))`}
+              loading="lazy"
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .brands {
+    padding-block: calc(121 * var(--k)) calc(141 * var(--k));
+  }
+
+  .brands__head {
+    display: grid;
+    grid-template-columns: 580fr 850fr;
+    align-items: start;
+  }
+
+  .brands__head .section-title span {
+    display: block;
+  }
+
+  /* Three 460x199 tiles across the 1430 content column. */
+  .brands__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: calc(24.5 * var(--k));
+    margin-top: calc(93 * var(--k));
+  }
+
+  .brand {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 460 / 199;
+    border-radius: var(--r-media);
+    background: var(--surface);
+  }
+
+  /* Logos sit at their native size on the canvas; the cap is only a
+     safety net for very narrow cards. */
+  .brand__logo {
+    height: auto;
+    max-width: 72%;
+  }
+
+  @media (max-width: 1100px) {
+    .brands__head {
+      grid-template-columns: 1fr;
+      gap: calc(24 * var(--k));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .brands__list {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .brands {
+    padding-block: calc(70 * var(--k)) calc(70 * var(--k));
+  }
+  .brands__list {
+    margin-top: calc(60 * var(--k));
+  }
+  }
+</style>

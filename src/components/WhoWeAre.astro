@@ -1,0 +1,104 @@
+---
+import { whoWeAre } from "../data/site";
+---
+
+<section class="who" id="about">
+  <div class="who__grid wide">
+    <h2 class="who__title section-title" data-reveal>{whoWeAre.title}</h2>
+
+    <div class="who__content">
+      <div class="prose" data-reveal data-reveal-delay="120">
+        {whoWeAre.body.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+
+      <ul class="stats">
+        {
+          whoWeAre.stats.map((stat, i) => (
+            <li class="stat" data-reveal data-reveal-delay={i * 90}>
+              <span class="stat__value">{stat.value}</span>
+              <span class="stat__label">{stat.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .who {
+    padding-top: calc(116 * var(--k));
+    padding-bottom: calc(140 * var(--k));
+  }
+
+  /* Canvas columns: 145 | 580 | 995 — heading at x245, copy x825..1820. */
+  .who__grid {
+    display: grid;
+    grid-template-columns: 145fr 580fr 995fr;
+    align-items: start;
+  }
+
+  .who__title {
+    grid-column: 2;
+  }
+
+  .who__content {
+    grid-column: 3;
+  }
+
+  /* Four near-touching discs, 248px across on the 1920 canvas. */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: calc(2 * var(--k));
+    margin-top: calc(51 * var(--k));
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: calc(8 * var(--k));
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--c-surface);
+    text-align: center;
+  }
+
+  .stat__value {
+    font-size: var(--fs-60);
+    line-height: 1;
+    color: #202020;
+  }
+
+  .stat__label {
+    font-size: var(--fs-body);
+    line-height: 1.2;
+    color: var(--c-body);
+  }
+
+  @media (max-width: 1100px) {
+    .who__grid {
+      grid-template-columns: 1fr;
+      gap: calc(28 * var(--k));
+    }
+
+    .who__title,
+    .who__content {
+      grid-column: 1;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .stats {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .who {
+    padding-top: calc(70 * var(--k));
+    padding-bottom: calc(70 * var(--k));
+  }
+  }
+</style>
