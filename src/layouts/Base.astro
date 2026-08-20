@@ -8,6 +8,11 @@ interface Props {
 
 const { title, description } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+
+// BASE_URL carries the GitHub Pages sub-path. Whether it ends in a slash
+// depends on the trailingSlash setting, so normalise before joining.
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith("/") ? rawBase.slice(0, -1) : rawBase;
 ---
 
 <!doctype html>
@@ -25,7 +30,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:url" content={canonical} />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
 
     {/* Runs before first paint so revealed elements never flash in at full
         opacity. The timeout is a safety net: if the observer below never
