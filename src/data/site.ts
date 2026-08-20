@@ -96,7 +96,7 @@ export const footer = {
   ],
   contact: {
     heading: "Contact",
-    phone: { label: "+91 98765 43210", href: "tel:+919876543210" },
+    phone: { label: "+91 95974 81976", href: "tel:+919597481976" },
     email: {
       label: "nsrlinfrastructure@gmail.com",
       href: "mailto:nsrlinfrastructure@gmail.com",
